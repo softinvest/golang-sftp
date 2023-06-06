@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/softinvest/golang-sftp/pkg/ftpManager"
+	"github.com/softinvest/go-sftp/pkg/ftpManager"
 	"time"
 
 	"github.com/spf13/cobra"
