@@ -1,4 +1,4 @@
-module github.com/softinvest/golang-sftp
+module github.com/softinvest/go-sftp
 
 go 1.14
 
