@@ -15,7 +15,6 @@ import (
 	"time"
 )
 
-const sshTurstedKey = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHHpFhk/28mT/rtxi77vz/NY35GCHoZwi7cAImtQITsy0uQRWH2PmhNwXRzzaZTtDFChzjE9BZwT7CtSGDt549M="
 
 type sftpClient struct {
 	host, user, password string
@@ -24,7 +23,7 @@ type sftpClient struct {
 }
 
 // Create a new SFTP connection by given parameters
-func NewConn(host, user, password string, port int) (client *sftpClient, err error) {
+func NewConn(host, user, password, sshTurstedKey string, port int) (client *sftpClient, err error) {
 	switch {
 	case `` == strings.TrimSpace(host),
 		`` == strings.TrimSpace(user),
@@ -40,7 +39,7 @@ func NewConn(host, user, password string, port int) (client *sftpClient, err err
 		port:     port,
 	}
 
-	if err = client.connect(); nil != err {
+	if err = client.connect(sshTurstedKey); nil != err {
 		return nil, err
 	}
 	return client, nil
@@ -73,7 +72,7 @@ func (sc *sftpClient) Put(localFile, remoteFile string) (err error) {
 	return
 }
 
-func (sc *sftpClient) connect() (err error) {
+func (sc *sftpClient) connect(sshTurstedKey string) (err error) {
 	config := &ssh.ClientConfig{
 		User:            sc.user,
 		Auth:            []ssh.AuthMethod{ssh.Password(sc.password)},
